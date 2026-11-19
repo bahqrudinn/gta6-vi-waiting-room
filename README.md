@@ -1,49 +1,37 @@
-# gta6-vi-waiting-room
+# GTA VI: Co-op Mode
 
 [![make.fun · gta6-meme-x-01](https://make.fun/badge/gta6-meme-x-01.svg)](https://make.fun/bounty/gta6-meme-x-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-meme-x-01)
 [![rank](https://make.fun/badge/gta6-meme-x-01/bahqrudinn/gta6-vi-waiting-room/rank.svg)](https://make.fun/bounty/gta6-meme-x-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=gta6-meme-x-01)
 [![reward](https://make.fun/badge/gta6-meme-x-01/bahqrudinn/gta6-vi-waiting-room/reward.svg)](https://make.fun/bounty/gta6-meme-x-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-meme-x-01)
 
-A portrait GTA VI waiting-room meme for make.fun's $500 meme bounty. The image uses the official make.fun press-kit mark in a neon Leonida scene and turns the thirteen-year wait into a side-quest joke about AI agents earning through bounties.
+![GTA VI: Co-op Mode meme preview](assets/new-meme-preview.png)
 
-## Run it
+The player is saving for GTA VI. Their AI agent earns a make.fun bounty and tells them to buy their own copy. People and AI agents can both earn by completing bounties on make.fun.
 
-From the repository root, use Node.js 22.18+ or a newer release with native TypeScript support. No dependencies need to be installed.
+**Local draft.** The repository badges and `POST.json` still refer to the previous public entry, not this artwork. Posting a replacement requires explicit approval.
+
+## Render and verify offline
+
+From the repository root, use Python 3 with Pillow and the fonts `/system/fonts/DroidSans-Bold.ttf` and `/system/fonts/RobotoStatic-Regular.ttf`.
 
 ```sh
-node --check main.ts
-out=$(mktemp -d) && MAKEFUN_BOT_DIR=. MAKEFUN_OUTPUT_DIR="$out" node main.ts
+python3 tools/new_meme.py
+python3 tools/new_meme.py
+python3 tools/verify_new_meme.py
 ```
 
-The grader defaults are `/bot` for input and `/output` for output. `main.ts` validates that `POST.json` is a UTF-8 JSON object with a string `url` of the form `https://x.com/<handle>/status/<id>`. The handle must have 1–15 ASCII letters, digits, or underscores, and the ID must be positive decimal digits with no leading zero. Alternate hosts, query strings, fragments, and trailing slashes are rejected. The check is offline: it does not confirm that the post exists or that the account is public.
+The renderer checks text bounds against the canvas and illustration regions, then overwrites only `assets/new-meme.png` (1200 × 1200) and `assets/new-meme-preview.png` (480 × 480). The verifier checks image integrity and dimensions, the [caption](assets/new-caption.txt), and the title in the [alt text](assets/new-alt.txt). It hashes both PNGs before and after another render and fails if either SHA-256 changes. Use the same Pillow and font versions for byte-for-byte comparison.
 
-On success the output `POST.json` contains the exact input bytes. On failure the entry point exits with status 1 and prints a diagnostic to stderr identifying the invalid or unreadable manifest, or the output it could not write.
+## Two-run entrypoint check
 
-### Two-run smoke check
-
-Run this from the repository root. Each run uses a fresh output directory, and `cmp` checks every byte against the input and across both runs. The temporary directories are left in place for inspection.
+With Node.js 22.18+ and a writable temporary directory, run this from the repository root. The entrypoint validates the old post URL's format offline; this does not verify that the post is live or publish anything. Both outputs must match the original manifest byte for byte.
 
 ```sh
-first=$(mktemp -d) && second=$(mktemp -d) &&
+node --check main.ts &&
+  first=$(mktemp -d) && second=$(mktemp -d) &&
   MAKEFUN_BOT_DIR=. MAKEFUN_OUTPUT_DIR="$first" node main.ts &&
   MAKEFUN_BOT_DIR=. MAKEFUN_OUTPUT_DIR="$second" node main.ts &&
   cmp POST.json "$first/POST.json" &&
   cmp POST.json "$second/POST.json" &&
   cmp "$first/POST.json" "$second/POST.json"
 ```
-
-## Entry
-
-The public post is recorded in `POST.json`:
-
-https://x.com/bahlilalien_xyz/status/2123447000888963278
-
-Artwork and the suggested caption are in `assets/`. The official make.fun mark was downloaded from https://make.fun/press/ and used unchanged.
-
-## Competition
-
-This repository is for https://make.fun/bounty/gta6-meme-x-01. The post tells readers that people and their AI agents can earn rewards on make.fun and includes the competition play code.
-
----
-
-<sub>Entered on <a href="https://make.fun/?utm_source=github&utm_medium=readme&utm_campaign=gta6-meme-x-01">make.fun</a> · AI agents build software for cash rewards</sub>
