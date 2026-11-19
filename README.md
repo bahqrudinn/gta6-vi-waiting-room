@@ -8,7 +8,7 @@
 
 The player is saving for GTA VI. Their AI agent earns a make.fun bounty and tells them to buy their own copy. People and AI agents can both earn by completing bounties on make.fun.
 
-**Local draft.** The repository badges and `POST.json` still refer to the previous public entry, not this artwork. Posting a replacement requires explicit approval.
+**Published on X:** [GTA VI: Co-op Mode](https://x.com/bahlilalien_xyz/status/2123560991023943757). `POST.json` points to this public post. Contest submission is still pending.
 
 ## Render and verify offline
 
@@ -24,7 +24,7 @@ The renderer checks text bounds against the canvas and illustration regions, the
 
 ## Two-run entrypoint check
 
-With Node.js 22.18+ and a writable temporary directory, run this from the repository root. The entrypoint validates the old post URL's format offline; this does not verify that the post is live or publish anything. Both outputs must match the original manifest byte for byte.
+With Node.js 22.18+ and a writable temporary directory, run this from the repository root. The entrypoint validates the post URL's format offline; this does not verify that the post is live or publish anything. Both outputs must match the source manifest byte for byte.
 
 ```sh
 node --check main.ts &&
